@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, Code, ExternalLink, Globe, Send } from "lucide-react";
+import { Mail, Phone, Code, Globe, Send} from "lucide-react";
 
 const NAV_ITEMS = [
   { id: "home", label: "HOME" },
@@ -19,20 +19,28 @@ const SKILLS = [
 
 const PROJECTS = [
   {
-    title: "Construction Management System",
-    stack: ["Python", "Django"],
-    github: "https://github.com/Haaris-02/Smartbuildes",
-    live: "https://haaris2003.pythonanywhere.com",
+    title: "TN Election Live Tracker 2026",
+    stack: ["React.js", "Django REST", "Python", "Vercel"],
+    github: "https://github.com/Haaris-02/tn-election-live-tracker-2026",
+    live: "https://tn-election-frontend-11mz.vercel.app",
     description:
-      "A full-featured Django platform to streamline project tracking, documents, resource planning, and progress visibility for construction teams.",
+      "Real-time dashboard tracking 234 constituencies. Built with a Python/Selenium web scraper, responsive Leaflet.js map, and Django REST backend.",
   },
   {
     title: "Online Masala Store",
     stack: ["Python", "Django", "HTML/CSS"],
     github: "https://github.com/Haaris-02/Masala_Store",
-    live: "",
+    live: "https://haaris2003.pythonanywhere.com",
     description:
       "A responsive e-commerce storefront with product browsing, account flows, and admin updates powered by Django.",
+  },
+  {
+    title: "Construction Management System",
+    stack: ["Python", "Django"],
+    github: "https://github.com/Haaris-02/Smartbuildes",
+    live: "",
+    description:
+      "A full-featured Django platform to streamline project tracking, documents, resource planning, and progress visibility for construction teams.",
   },
 ];
 
@@ -521,7 +529,7 @@ function ProjectCard({ title, stack, github, live, description }) {
       <p style={{ color: "#d9f6ff", lineHeight: 1.55, marginTop: 14 }}>{description}</p>
       <div style={{ display: "flex", gap: 12, marginTop: "auto" }}>
         <LinkButton href={github} icon={<Code size={15} />} label="GitHub" />
-        {live ? <LinkButton href={live} icon={<ExternalLink size={15} />} label="Live" /> : null}
+        {live ? <LinkButton href={live} icon={<Globe size={15} />} label="Live" /> : null}
       </div>
     </motion.article>
   );
