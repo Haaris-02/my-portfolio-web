@@ -1,6 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone, Code, Globe, Send} from "lucide-react";
+import { useState, useRef } from 'react';
+import emailjs from '@emailjs/browser';
 
 const NAV_ITEMS = [
   { id: "home", label: "HOME" },
@@ -563,6 +565,19 @@ export default function App() {
   const sectionRefs = React.useRef({});
   const [activeSection, setActiveSection] = React.useState("home");
   const [hoveredNavItem, setHoveredNavItem] = React.useState(null);
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs.sendForm('service_b9iqgej', 'template_upijlsj', form.current, '_DymOkMTyJ8U7_5cI')
+      .then((result) => {
+          alert('Message sent successfully!');
+          e.target.reset();
+      }, (error) => {
+          alert('Failed to send message, please try again.');
+      });
+  };
 
   React.useEffect(() => {
     const observer = new IntersectionObserver(
@@ -584,6 +599,7 @@ export default function App() {
 
     return () => observer.disconnect();
   }, []);
+  
 
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 900);
   React.useEffect(() => {
@@ -823,6 +839,8 @@ export default function App() {
             }}
           >
             <form
+              ref={form}
+              onSubmit={sendEmail}
               style={{
                 borderRadius: 16,
                 padding: isMobile ? "1rem" : "1.25rem",
@@ -832,11 +850,10 @@ export default function App() {
                 boxShadow:
                   "0 0 16px rgba(0, 183, 255, 0.18), inset 0 0 14px rgba(136, 236, 255, 0.05)",
               }}
-              onSubmit={(e) => e.preventDefault()}
             >
-              <Input label="Name" type="text" placeholder="Your name" />
-              <Input label="Email" type="email" placeholder="Your email" />
-              <Input label="Message" textarea placeholder="Type your message..." />
+              <Input label="Name" name="user_name" type="text" placeholder="Your name" />
+              <Input label="Email" name="user_email" type="email" placeholder="Your email" />
+              <Input label="Message" name="message" textarea placeholder="Type your message..." />
               <button
                 type="submit"
                 style={{
@@ -913,7 +930,7 @@ function SectionHeading({ title }) {
   );
 }
 
-function Input({ label, type = "text", placeholder, textarea = false }) {
+function Input({ label, type = "text", placeholder, textarea = false, name }) {
   const baseStyle = {
     width: "100%",
     borderRadius: 10,
@@ -937,9 +954,9 @@ function Input({ label, type = "text", placeholder, textarea = false }) {
     >
       {label}
       {textarea ? (
-        <textarea placeholder={placeholder} rows={4} style={{ ...baseStyle, resize: "vertical" }} />
+        <textarea name={name} placeholder={placeholder} rows={4} style={{ ...baseStyle, resize: "vertical" }} />
       ) : (
-        <input type={type} placeholder={placeholder} style={baseStyle} />
+        <input type={type} name={name} placeholder={placeholder} style={baseStyle} />
       )}
     </label>
   );
