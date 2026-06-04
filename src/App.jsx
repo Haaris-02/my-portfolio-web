@@ -1,6 +1,28 @@
 import React from "react";
-import { motion } from "framer-motion";
-import { Mail, Phone, Code, Globe, Send} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Mail, Phone, Send } from "lucide-react";
+import {
+  FaGithub,
+  FaGlobe,
+  FaLinkedin,
+  FaPython,
+  FaMapMarkerAlt,
+  FaPhoneAlt,
+  FaEnvelope,
+  FaReact,
+  FaHtml5,
+  FaCss3Alt,
+  FaWordpress,
+  FaChevronLeft,
+  FaChevronRight,
+} from "react-icons/fa";
+import {
+  SiVercel,
+  SiDjango,
+  SiRender,
+  SiSelenium,
+  SiLeaflet,
+} from "react-icons/si";
 import { useState, useRef } from 'react';
 import emailjs from '@emailjs/browser';
 
@@ -13,9 +35,12 @@ const NAV_ITEMS = [
 
 const SKILLS = [
   "Python",
-  "Django",
-  "HTML/CSS",
+  "Django REST",
+  "React.js",
+  "Selenium",
   "Git/GitHub",
+  "Vercel",
+  "Render",
   "PythonAnywhere",
 ];
 
@@ -44,6 +69,20 @@ const PROJECTS = [
     description:
       "A full-featured Django platform to streamline project tracking, documents, resource planning, and progress visibility for construction teams.",
   },
+];
+
+const TECH_ICONS = [
+  { Icon: FaPython, name: "Python" },
+  { Icon: SiDjango, name: "Django" },
+  { Icon: FaReact, name: "React" },
+  { Icon: FaHtml5, name: "HTML5" },
+  { Icon: FaCss3Alt, name: "CSS3" },
+  { Icon: FaGithub, name: "GitHub" },
+  { Icon: SiVercel, name: "Vercel" },
+  { Icon: SiRender, name: "Render" },
+  { Icon: SiSelenium, name: "Selenium" },
+  { Icon: SiLeaflet, name: "Leaflet.js" },
+  { Icon: FaWordpress, name: "WordPress" },
 ];
 
 const STAR_COLORS = [
@@ -530,8 +569,19 @@ function ProjectCard({ title, stack, github, live, description }) {
       </div>
       <p style={{ color: "#d9f6ff", lineHeight: 1.55, marginTop: 14 }}>{description}</p>
       <div style={{ display: "flex", gap: 12, marginTop: "auto" }}>
-        <LinkButton href={github} icon={<Code size={15} />} label="GitHub" />
-        {live ? <LinkButton href={live} icon={<Globe size={15} />} label="Live" /> : null}
+        <LinkButton href={github} icon={<FaGithub size={16} />} label="GitHub" />
+        {live &&
+          (title === "TN Election Live Tracker 2026" ? (
+            <LinkButton href={live} icon={<SiVercel size={16} />} label="Vercel" />
+          ) : title === "Online Masala Store" ? (
+            <LinkButton
+              href={live}
+              icon={<FaPython size={16} />}
+              label="PythonAnywhere"
+            />
+          ) : (
+            <LinkButton href={live} icon={<FaGlobe size={16} />} label="Live" />
+          ))}
       </div>
     </motion.article>
   );
@@ -546,7 +596,7 @@ function LinkButton({ href, icon, label }) {
       style={{
         display: "inline-flex",
         alignItems: "center",
-        gap: 6,
+        gap: '8px',
         textDecoration: "none",
         color: "#b7f2ff",
         padding: "0.4rem 0.72rem",
@@ -561,7 +611,96 @@ function LinkButton({ href, icon, label }) {
   );
 }
 
+function HeroContactItem({ icon, href, children }) {
+  const content = (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+      }}
+    >
+      <span style={{ color: '#82e9ff' }}>{icon}</span>
+      {children}
+    </div>
+  );
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ color: 'inherit', textDecoration: 'none' }}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return content;
+}
+
+const TechStackMarquee = () => {
+  const icons = [
+    <FaPython size={50} color="#3776AB" />,
+    <SiDjango size={50} color="#092E20" />,
+    <FaReact size={50} color="#61DAFB" />,
+    <FaHtml5 size={50} color="#E34F26" />,
+    <FaCss3Alt size={50} color="#1572B6" />,
+    <SiSelenium size={50} color="#43B02A" />,
+    <SiLeaflet size={50} color="#199900" />,
+    <FaGithub size={50} color="#ffffff" />,
+    <SiVercel size={50} color="#ffffff" />,
+    <SiRender size={50} color="#46E3B7" />
+  ];
+
+  return (
+    <div style={{ padding: '50px 0', overflow: 'hidden', background: 'transparent', width: '100%' }}>
+      <style>
+        {`
+          @keyframes scrollLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          .marquee-track {
+            display: flex;
+            width: 200%;
+            animation: scrollLeft 20s linear infinite;
+            gap: 40px;
+          }
+          .icon-box {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(109, 220, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+          }
+          .icon-box:hover {
+            transform: scale(1.15) translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(109, 220, 255, 0.4);
+            box-shadow: 0 10px 20px rgba(0, 183, 255, 0.15);
+          }
+        `}
+      </style>
+      <div className="marquee-track">
+        {/* Muthal set icons */}
+        {icons.map((icon, index) => <div key={`icon1-${index}`} className="icon-box">{icon}</div>)}
+        {/* Rendaavathu set icons (Infinite loop-kaga) */}
+        {icons.map((icon, index) => <div key={`icon2-${index}`} className="icon-box">{icon}</div>)}
+      </div>
+    </div>
+  );
+};
+
 export default function App() {
+  const [currentProject, setCurrentProject] = useState(0);
+  const [direction, setDirection] = useState(0);
   const sectionRefs = React.useRef({});
   const [activeSection, setActiveSection] = React.useState("home");
   const [hoveredNavItem, setHoveredNavItem] = React.useState(null);
@@ -577,6 +716,16 @@ export default function App() {
       }, (error) => {
           alert('Failed to send message, please try again.');
       });
+  };
+
+  const nextProject = () => {
+    setDirection(1);
+    setCurrentProject((prev) => (prev + 1) % PROJECTS.length);
+  };
+
+  const prevProject = () => {
+    setDirection(-1);
+    setCurrentProject((prev) => (prev - 1 + PROJECTS.length) % PROJECTS.length);
   };
 
   React.useEffect(() => {
@@ -608,6 +757,114 @@ export default function App() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
+  const developerTextStyle = `
+    @keyframes shine {
+      to {
+        background-position: -200% center;
+      }
+    }
+    .developer-gradient-text {
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: linear-gradient(90deg, #4285F4, #EA4335, #FBBC05, #34A853, #4285F4);
+      background-size: 200% auto;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 8s linear infinite;
+      transition: transform 0.3s ease, filter 0.3s ease;
+      filter: drop-shadow(0 0 5px rgba(173, 216, 230, 0.3));
+      cursor: pointer;
+    }
+    .developer-gradient-text:hover {
+      transform: scale(1.05);
+      filter: drop-shadow(0 0 15px rgba(173, 216, 230, 0.6)) drop-shadow(0 0 45px rgba(173, 216, 230, 0.3));
+    }
+  `;
+
+  const carouselStyle = `
+    .carousel-button {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(133, 228, 255, 0.2);
+      border-radius: 50%;
+      width: ${isMobile ? 38 : 44}px;
+      height: ${isMobile ? 38 : 44}px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #c5f6ff;
+      backdrop-filter: blur(4px);
+      transition: all 0.2s ease-in-out;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+    .carousel-button:hover {
+      background: rgba(100, 220, 255, 0.15);
+      border-color: rgba(100, 220, 255, 0.5);
+      transform: scale(1.1);
+    }
+    .project-card-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 460px; /* Match ProjectCard width */
+      height: 320px; /* Give a fixed height to prevent layout shift */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+  `;
+
+  const variants = {
+    enter: (direction) => ({
+      x: direction > 0 ? 50 : -50,
+      opacity: 0,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction) => ({
+      zIndex: 0,
+      x: direction < 0 ? 50 : -50,
+      opacity: 0,
+    }),
+  };
+
+  const marqueeStyle = `
+    @keyframes scrollLeft {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    .marquee-container {
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+      mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    }
+    .marquee-track {
+      display: flex;
+      gap: 4rem;
+      width: fit-content;
+      animation: scrollLeft 40s linear infinite;
+    }
+    .tech-icon-wrapper {
+      flex-shrink: 0;
+      padding: 0.75rem;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+    .tech-icon-wrapper:hover {
+      transform: scale(1.15) translateY(-5px);
+      background: rgba(142, 230, 255, 0.1);
+    }
+  `;
+
   return (
     <div
       style={{
@@ -617,6 +874,9 @@ export default function App() {
         background: "transparent",
       }}
     >
+      <style>{developerTextStyle}</style>
+      <style>{marqueeStyle}</style>
+      <style>{carouselStyle}</style>
       <WarpStarfield />
       <div
         style={{
@@ -728,16 +988,45 @@ export default function App() {
           >
             <ParticleNameCanvas text="MOHAMAD ALHARIS" />
           </div>
-          <p
+          <h2
+            className="developer-gradient-text"
             style={{
-              marginTop: 2,
-              color: "#9de8ff",
-              fontSize: isMobile ? "1rem" : "1.2rem",
+              margin: `${isMobile ? 4 : 0}px 0 12px`,
+              fontSize: isMobile ? "1.8rem" : "2.4rem",
               letterSpacing: "0.1em",
             }}
           >
-            Python Developer | Web Technologies
-          </p>
+            DEVELOPER
+          </h2>
+          <div
+            style={{
+              marginTop: 24,
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              gap: isMobile ? '15px 25px' : '25px',
+              maxWidth: 600,
+              color: 'rgba(255, 255, 255, 0.85)',
+              fontSize: isMobile ? '0.8rem' : '0.9rem',
+            }}
+          >
+            <HeroContactItem icon={<FaMapMarkerAlt />}>
+              Tirunelveli, Tamil Nadu, India
+            </HeroContactItem>
+            <HeroContactItem icon={<FaPhoneAlt />}>+91 8056328106</HeroContactItem>
+            <HeroContactItem icon={<FaEnvelope />}>
+              haarishaaris64@gmail.com
+            </HeroContactItem>
+            <HeroContactItem icon={<FaGithub />} href="https://github.com/Haaris-02">
+              github.com/Haaris-02
+            </HeroContactItem>
+            <HeroContactItem
+              icon={<FaLinkedin />}
+              href="https://linkedin.com/in/mohamad-alharis-978627224"
+            >
+              linkedin.com/in/mohamad-alharis
+            </HeroContactItem>
+          </div>
         </section>
 
         <section
@@ -761,12 +1050,16 @@ export default function App() {
           >
             <h3 style={aboutSubHeadingStyle}>BIO</h3>
             <p style={aboutLineStyle}>
-              B.Sc. Computer Science graduate and Python developer passionate about building
-              practical, user-focused web solutions.
+              B.Sc. Computer Science graduate (CGPA 8.03) with hands-on
+              experience in Python, Django, and React.js. Government-certified
+              Python programmer (ESDP) passionate about building practical,
+              decoupled full-stack web solutions.
             </p>
             <h3 style={aboutSubHeadingStyle}>EDUCATION</h3>
             <p style={aboutLineStyle}>
-              B.Sc. Computer Science (2021-2024) from Sadakathullah Appa College
+              B.Sc. Computer Science (2021-2024) from Sadakathullah Appa College.
+              Certifications: ESDP Python Programming (Govt. Certified) &
+              Computer Hardware & Networking (LAN/WAN, TCP/IP).
             </p>
             <h3 style={aboutSubHeadingStyle}>SKILLS</h3>
             <div
@@ -795,8 +1088,15 @@ export default function App() {
             </div>
             <h3 style={aboutSubHeadingStyle}>CURRENTLY LEARNING</h3>
             <p style={aboutLineStyle}>
-              Actively exploring AI/ML fundamentals and applications
+              Actively expanding into Machine Learning and AI/ML fundamentals.
             </p>
+          </div>
+        </section>
+
+        <section style={{ padding: "4rem 0" }}>
+          <SectionHeading title="TECH STACK" />
+          <div style={{ marginTop: 24 }}>
+            <TechStackMarquee />
           </div>
         </section>
 
@@ -810,15 +1110,35 @@ export default function App() {
           <SectionHeading title="PROJECT" />
           <div
             style={{
-              marginTop: 24,
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: 18,
+              marginTop: '24px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: isMobile ? '0.5rem' : '1.5rem',
             }}
           >
-            {PROJECTS.map((project) => (
-              <ProjectCard key={project.title} {...project} />
-            ))}
+            <button className="carousel-button" onClick={prevProject} aria-label="Previous project">
+              <FaChevronLeft />
+            </button>
+            <div className="project-card-wrapper">
+              <AnimatePresence initial={false} custom={direction} mode="wait">
+                <motion.div
+                  key={currentProject}
+                  custom={direction}
+                  variants={variants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                  style={{ position: 'absolute' }}
+                >
+                  <ProjectCard {...PROJECTS[currentProject]} />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+            <button className="carousel-button" onClick={nextProject} aria-label="Next project">
+              <FaChevronRight />
+            </button>
           </div>
         </section>
 
@@ -897,12 +1217,12 @@ export default function App() {
                 href="mailto:haarishaaris64@gmail.com"
               />
               <ContactLine
-                icon={<Code size={18} />}
+                icon={<FaGithub size={16} />}
                 text="GitHub"
                 href="https://github.com/Haaris-02"
               />
               <ContactLine
-                icon={<Globe size={18} />}
+                icon={<FaLinkedin size={16} />}
                 text="LinkedIn"
                 href="https://linkedin.com/in/mohamad-alharis-978627224"
               />
@@ -985,7 +1305,7 @@ function ContactLine({ icon, text, href }) {
 
 const aboutLineStyle = {
   margin: 0,
-  color: "#ddf7ff",
+  color: "rgba(255, 255, 255, 0.75)",
   lineHeight: 1.6,
   letterSpacing: "0.04em",
 };
@@ -993,7 +1313,8 @@ const aboutLineStyle = {
 const aboutSubHeadingStyle = {
   marginTop: 24,
   marginBottom: 10,
-  color: "#b8f4ff",
+  color: "#64ffda",
   letterSpacing: "0.08em",
   fontSize: "0.98rem",
+  fontWeight: "bold",
 };
